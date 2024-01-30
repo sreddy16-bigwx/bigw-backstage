@@ -33,6 +33,8 @@ import { AppRouter, FlatRoutes } from '@backstage/core-app-api';
 import { CatalogGraphPage } from '@backstage/plugin-catalog-graph';
 import { RequirePermission } from '@backstage/plugin-permission-react';
 import { catalogEntityCreatePermission } from '@backstage/plugin-catalog-common/alpha';
+import { AzStoragePage } from '@internal/plugin-az-storage';
+import { AzureStoragePage } from '@internal/plugin-azure-storage';
 
 const app = createApp({
   apis,
@@ -93,6 +95,8 @@ const routes = (
     </Route>
     <Route path="/settings" element={<UserSettingsPage />} />
     <Route path="/catalog-graph" element={<CatalogGraphPage />} />
+    <Route path="/az-storage" element={<AzStoragePage />} />
+    <Route path="/azure-storage" element={<AzureStoragePage />} />
   </FlatRoutes>
 );
 

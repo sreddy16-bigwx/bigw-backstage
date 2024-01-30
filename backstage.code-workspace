@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../backup-files"
+		},
+		{
+			"path": "../../Project-PoCs/Wow-Demo/bigDemo-templates"
+		},
+		{
+			"path": "../../Project-PoCs/Wow-Demo/tfdemo-storage-account"
+		},
+		{
+			"path": "../../Other-repos-ref"
+		},
+		{
+			"path": "../../app-color"
+		}
+	],
+	"settings": {}
+}

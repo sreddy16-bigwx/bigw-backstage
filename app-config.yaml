@@ -1,9 +1,9 @@
 app:
-  title: Scaffolded Backstage App
+  title:  Demo Backstage App
   baseUrl: http://localhost:3000
 
 organization:
-  name: My Company
+  name: BackStage-PoC
 
 backend:
   # Used for enabling authentication, secret is shared by all backend plugins
@@ -33,17 +33,24 @@ backend:
   # workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
 
 integrations:
+  azure:
+    - host: dev.azure.com
+      token: ${AZURE_DEVOPS_TOKEN}
   github:
     - host: github.com
+      apiBaseUrl: 'https://api.github.com'
       # This is a Personal Access Token or PAT from GitHub. You can find out how to generate this token, and more information
       # about setting up the GitHub integration here: https://backstage.io/docs/getting-started/configuration#setting-up-a-github-integration
-      token: ${GITHUB_TOKEN}
+      token: ${AUTH_GITHUB_TOKEN}
     ### Example for how to add your GitHub Enterprise instance using the API:
     # - host: ghe.example.net
     #   apiBaseUrl: https://ghe.example.net/api/v3
     #   token: ${GHE_TOKEN}
 
 proxy:
+  '/test':
+    target: 'https://example.com'
+    changeOrigin: true
   ### Example for how to add a proxy endpoint for the frontend.
   ### A typical reason to do this is to handle HTTPS and CORS for internal services.
   # endpoints:
@@ -58,15 +65,37 @@ proxy:
 techdocs:
   builder: 'local' # Alternatives - 'external'
   generator:
-    runIn: 'docker' # Alternatives - 'local'
+    runIn: 'local' # Alternatives - 'docker'
   publisher:
-    type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
+    type: 'local' #'azureBlobStorage'
+    #azureBlobStorage: 
+      #containerName: 'backstage-techdocs' #${TECHDOCS_PUB_AZURE_STORAGE_ACCOUNT_BLOB_NAME}
+      #credentials:
+        #accountName: 'sacc4scripts' #${TECHDOCS_PUB_AZURE_STORAGE_ACCOUNT_NAME}
+        #accountKey: 'CQp3cc3dl9x80y0pwdmEJu+ZgG80bOmWVNx2n2+W9w1WwAchZgLUW2JBBWGll3aIU43rsY/3Ku7S6AwS5xGY2A==' #${TECHDOCS_PUB_AZURE_STORAGE_ACCOUNT_KEY}
 
 auth:
-  # see https://backstage.io/docs/auth/ to learn about auth providers
-  providers: {}
-
+  environment: development
+  providers:
+    github:
+      development:
+        clientId: ${AUTH_GITHUB_CLIENT_ID}
+        clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
+        ## uncomment if using GitHub Enterprise
+        # enterpriseInstanceUrl: ${AUTH_GITHUB_ENTERPRISE_INSTANCE_URL}
+    microsoft:
+      development:
+        clientId: 7f27d8e4-9648-4699-ae62-b13582b8cf9b
+        clientSecret: HEg8Q~i3SV4tbLHLBaLby_FtCbz5K2H3HcS7hcdo
+        tenantId: b73d7ccc-dc96-4769-a21f-fcaa65461b4c
+  
 scaffolder:
+  github:
+    token:
+      $env: GITHUB_TOKEN
+    visibility: public # or 'internal' or 'private'
+  microsoft:
+    visibility: public # or 'internal' or 'private'
   # see https://backstage.io/docs/features/software-templates/configuration for software template options
 
 catalog:
@@ -74,13 +103,88 @@ catalog:
     entityFilename: catalog-info.yaml
     pullRequestBranchName: backstage-integration
   rules:
-    - allow: [Component, System, API, Resource, Location]
+    - allow: [Component, System, API, Group, Users, Resource, Location, Template]
   locations:
     # Local example data, file locations are relative to the backend process, typically `packages/backend`
     - type: file
       target: ../../examples/entities.yaml
+    #- type: github-discovery
+    #  target: https://github.com/sreddy16-bigwx/bigDemo-templates/tree/main/groups/*.yaml
 
+    # Local example template - simple template
+    # Template - Just a demo template v0.1.0
+    #- type: url
+    #  target: https://github.com/sreddy16-bigwx/Backstage-demo-templates/blob/main/temp-sample/template.yaml
+    #  rules:
+    #    - allow: [Template]
+      
+    # Local example template - terraform template
+    # Template - .NET WebAPI App
+    #- type: url
+    #  target: https://github.com/sreddy16-bigwx/Backstage-demo-templates/blob/main/temp-dotnet/dotnet-webapi.yaml
+    #  rules:
+    #    - allow: [Template]
+    
+    # Local example template - terraform template
+    # Template - terraform-template
+    #- type: url
+    #  target: https://github.com/sreddy16-bigwx/bigDemo-templates/blob/main/infra-templates/resource-random/template.yml
+    #  rules:  
+    #    - allow: [Template]
+    
+    # Local example template - terraform AKS template
+    # Template - Infra-Templates-aks
+    #- type: url
+    #  target: https://github.com/sreddy16-bigwx/Backstage-demo-templates/blob/main/temp-terraform-aks/template.yaml
+    #  rules:
+    #    - allow: [Template]
+
+    #- type: url
+    #  target: https://github.com/sreddy16-bigwx/Backstage-demo-templates/blob/main/temp-terraform-eks/template.yaml
+    #  rules:
+    #    - allow: [Template]
+    #- type: url
+    #  target: https://github.com/sreddy16-bigwx/Backstage-demo-templates/blob/main/temp-terraform/storage-account/template.yaml
+    #  rules:
+    #    - allow: [Template]
+    
     # Local example template
+    # Template - Infra-Templates-sa
+    #- type: url
+    #  target: https://github.com/sreddy16-bigwx/bigDemo-templates/blob/main/infra-templates/resource-storage-account/template.yaml
+    #  rules:
+    #    - allow: [Template]
+    
+    # Local example template
+    # Template - app-infra 
+    #- type: url
+    #  target: https://github.com/sreddy16-bigwx/bigDemo-templates/blob/main/infra-templates/app-infra/template.yaml
+    #  rules:
+    #    - allow: [Template]
+    # Local example template
+    # Template - app-infra-terra 
+    #- type: url
+    #  target: https://github.com/sreddy16-bigwx/bigDemo-templates/blob/main/infra-templates/app-infra-terra/template.yaml
+    #  #target: https://github.com/sreddy16-bigwx/bigDemo-templates/blob/main/app-infraconfig/template.yaml
+    #  rules:
+    #    - allow: [Template]
+    # Template - app-infra-terra-azure
+    - type: url
+      target: https://github.com/sreddy16-bigwx/bigDemo-templates/blob/main/app-infra-azure/template.yaml
+      rules:
+        - allow: [Template]
+    # Local example template
+    # Template - app-infraconfig 
+    - type: url
+      target: https://github.com/sreddy16-bigwx/bigDemo-templates/blob/main/app-infraconfig/template.yaml
+      rules:
+        - allow: [Template]
+    # Local example template
+    # Template - app-infra-temp
+    - type: url
+      target: https://github.com/sreddy16-bigwx/bigDemo-templates/blob/main/app-infra-temp/template.yaml
+      rules:
+        - allow: [Template]
     - type: file
       target: ../../examples/template/template.yaml
       rules:
@@ -93,11 +197,28 @@ catalog:
         - allow: [User, Group]
 
     ## Uncomment these lines to add more example data
-    # - type: url
-    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all.yaml
-
+    ## - type: url
+    ##  target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all.yaml
+ 
     ## Uncomment these lines to add an example org
-    # - type: url
-    #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
-    #   rules:
-    #     - allow: [User, Group]
+    - type: url
+      target: https://github.com/sreddy16-bigwx/bigDemo-templates/blob/main/groups/Group-Avengers.yml
+      rules:
+        - allow: [User, Group]
+    - type: url
+      target: https://github.com/sreddy16-bigwx/bigDemo-templates/blob/main/groups/Group-Starwars.yml
+      rules:
+        - allow: [User, Group]
+    - type: github
+      target: https://github.com/backstage/backstage/blob/master/plugins/scaffolder-backend/sample-templates/docs-template/template.yaml
+      rules:
+        - allow: [Template]
+
+azureStorage:
+  blobContainers:
+    - accountName: 'sacc4scripts'
+      authType: clientToken
+      auth:
+        tenantId: 'b73d7ccc-dc96-4769-a21f-fcaa65461b4c'
+        clientId: '7f27d8e4-9648-4699-ae62-b13582b8cf9b'
+        clientSecret: 'HEg8Q~i3SV4tbLHLBaLby_FtCbz5K2H3HcS7hcdo'
