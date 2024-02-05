@@ -168,6 +168,18 @@ catalog:
     #  #target: https://github.com/sreddy16-bigwx/bigDemo-templates/blob/main/app-infraconfig/template.yaml
     #  rules:
     #    - allow: [Template]
+
+    # Template -aBigTemplate-T001
+    - type: url
+      target: https://github.com/BigWX/backstage-templates/blob/main/BigTemplate-T001/BigTemplate-T001.yaml
+      rules:
+        - allow: [Template]
+
+    # Template -aBigTemplate-TTT
+    - type: url
+      target: https://github.com/sreddy16-bigwx/bigDemo-templates/blob/main/bigInfra-template/template.yaml
+      rules:
+        - allow: [Template]
     # Template - app-infra-terra-azure
     - type: url
       target: https://github.com/sreddy16-bigwx/bigDemo-templates/blob/main/app-infra-azure/template.yaml
@@ -180,11 +192,7 @@ catalog:
       rules:
         - allow: [Template]
     # Local example template
-    # Template - app-infra-temp
-    - type: url
-      target: https://github.com/sreddy16-bigwx/bigDemo-templates/blob/main/app-infra-temp/template.yaml
-      rules:
-        - allow: [Template]
+
     - type: file
       target: ../../examples/template/template.yaml
       rules:

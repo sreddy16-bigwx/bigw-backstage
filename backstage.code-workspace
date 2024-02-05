@@ -7,9 +7,6 @@
 			"path": "../backup-files"
 		},
 		{
-			"path": "../../Project-PoCs/Wow-Demo/bigDemo-templates"
-		},
-		{
 			"path": "../../Project-PoCs/Wow-Demo/tfdemo-storage-account"
 		},
 		{
@@ -17,6 +14,12 @@
 		},
 		{
 			"path": "../../app-color"
+		},
+		{
+			"path": "../backstage-templates"
+		},
+		{
+			"path": "../../Project-PoCs/Wow-Demo/bigDemo-templates"
 		}
 	],
 	"settings": {}
