@@ -30,6 +30,7 @@
     "@backstage/plugin-permission-node": "^0.7.20",
     "@backstage/plugin-proxy-backend": "^0.4.7",
     "@backstage/plugin-scaffolder-backend": "^1.20.0",
+    "@backstage/plugin-scaffolder-backend-module-confluence-to-markdown": "^0.2.10",
     "@backstage/plugin-search-backend": "^1.4.9",
     "@backstage/plugin-search-backend-module-catalog": "^0.1.13",
     "@backstage/plugin-search-backend-module-pg": "^0.5.18",
